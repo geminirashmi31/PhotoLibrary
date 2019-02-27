@@ -6,17 +6,21 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace PhotoLibrary
+namespace PhotoLibraryApp
 {
-    class PhotoLibrary
+    public class PhotoLibrary
     {
         private const string TEXT_FILE_NAME = "PhotoLibrary";
-        public string Name { get; set; }
-        public string CoverPhotoPath { get; set; }
-
+        public string Name { get; private set; }
+        public string CoverPhotoPath { get; private set; }
+        [JsonProperty]
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
-
+        public PhotoLibrary(){}
+        public PhotoLibrary(string name)
+        {
+            Name = name;
+        }
 
         public void AddPhotoPath(string photoPath)
         {
@@ -43,7 +47,35 @@ namespace PhotoLibrary
         }
 
         
+        public async static Task<List<PhotoLibrary>> LoadPhotoLibrary(string libraryName)
+        {
+            string fileContact = await FileHelper.ReadTextFileAsync(TEXT_FILE_NAME + libraryName + ".txt");
 
+            PhotoLibrary library = JsonConvert.DeserializeObject<PhotoLibrary>(fileContact);
+
+            var photoLibrary = new List<PhotoLibrary>();
+            photoLibrary.Add(library);
+            return photoLibrary;
+        }
+
+        public static List<Photo> LoadPhotoes(string libraryName)
+        {
+            var photoes = new List<Photo>();
+            List<PhotoLibrary> libraryList = LoadPhotoLibrary(libraryName).Result;
+            PhotoLibrary currentLibrary = libraryList.First();
+
+            Dictionary<string, Photo> dictionary = currentLibrary.photoLibrary;
+            foreach (var pic in dictionary)
+            {
+                var photo = new Photo
+                {
+                    Name = System.IO.Path.GetFileName(pic.Key),
+                    Path = pic.Key
+                };
+                photoes.Add(photo);
+            }
+            return photoes;
+        }
 
     }
 }

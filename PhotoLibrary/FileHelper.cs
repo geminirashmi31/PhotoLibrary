@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace PhotoLibrary
+namespace PhotoLibraryApp
 {
     //class static, all methods static
     public static class FileHelper

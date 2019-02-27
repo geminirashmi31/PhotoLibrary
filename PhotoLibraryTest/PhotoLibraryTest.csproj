@@ -159,9 +159,9 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PhotoLibrary\PhotoLibrary.csproj">
+    <ProjectReference Include="..\PhotoLibrary\PhotoLibraryApp.csproj">
       <Project>{fdac585a-b43f-4bbb-a4af-5ebac32d2ecf}</Project>
-      <Name>PhotoLibrary</Name>
+      <Name>PhotoLibraryApp</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
