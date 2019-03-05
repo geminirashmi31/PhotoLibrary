@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 
-namespace PhotoLibraryApp
+namespace PhotoLibrary
 {
     //class static, all methods static
     public static class FileHelper
@@ -27,12 +27,13 @@ namespace PhotoLibraryApp
             textWriter.WriteString(content);
             await textWriter.StoreAsync();
             textStream.Dispose();
+
         }
 
         public static async Task<string> ReadTextFileAsync(string filename)
         {
-            var localFolder = ApplicationData.Current.LocalFolder;
-            var textFile = await localFolder.GetFileAsync(filename);
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            StorageFile textFile = await localFolder.GetFileAsync(filename);
             var textStream = await textFile.OpenReadAsync();
             var textReader = new DataReader(textStream);
             var textLength = textStream.Size;

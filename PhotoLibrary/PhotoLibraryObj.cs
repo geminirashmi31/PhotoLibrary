@@ -6,9 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace PhotoLibraryApp
+namespace PhotoLibrary
 {
-    public class PhotoLibrary
+    public class PhotoLibraryObj
     {
         private const string TEXT_FILE_NAME = "PhotoLibrary";
         public string Name { get; private set; }
@@ -16,8 +16,8 @@ namespace PhotoLibraryApp
         [JsonProperty]
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
-        public PhotoLibrary(){}
-        public PhotoLibrary(string name)
+        public PhotoLibraryObj(){}
+        public PhotoLibraryObj(string name)
         {
             Name = name;
         }
@@ -30,8 +30,7 @@ namespace PhotoLibraryApp
                 Path = photoPath
             };
             photoLibrary.Add(photoPath, photoToAdd);
-            string jsonPhotoLibrary = JsonConvert.SerializeObject(this);
-            FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
+            Save(this);
         } 
 
         public void RemovePhotoPath(string photoPath)
@@ -42,29 +41,33 @@ namespace PhotoLibraryApp
                 Path = photoPath
             };
             photoLibrary.Remove(photoPath);
+            Save(this);
+        }
+
+        public void Save(PhotoLibraryObj photoLibrary)
+        {
             string jsonPhotoLibrary = JsonConvert.SerializeObject(this);
             FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
         }
 
-        
-        public async static Task<List<PhotoLibrary>> LoadPhotoLibrary(string libraryName)
+        public static async Task<PhotoLibraryObj> LoadPhotoLibrary(string libraryName)
         {
             string fileContact = await FileHelper.ReadTextFileAsync(TEXT_FILE_NAME + libraryName + ".txt");
 
-            PhotoLibrary library = JsonConvert.DeserializeObject<PhotoLibrary>(fileContact);
+            PhotoLibraryObj library = JsonConvert.DeserializeObject<PhotoLibraryObj>(fileContact);
 
-            var photoLibrary = new List<PhotoLibrary>();
-            photoLibrary.Add(library);
-            return photoLibrary;
+            //var photoLibrary = new List<PhotoLibrary>();
+            //photoLibrary.Add(library);
+            return library;
         }
 
-        public static List<Photo> LoadPhotoes(string libraryName)
+        public static async Task<List<Photo>> LoadPhotoes(string libraryName)
         {
             var photoes = new List<Photo>();
-            List<PhotoLibrary> libraryList = LoadPhotoLibrary(libraryName).Result;
-            PhotoLibrary currentLibrary = libraryList.First();
+            PhotoLibraryObj library = await LoadPhotoLibrary(libraryName);
+            //PhotoLibrary currentLibrary = libraryList.First();
 
-            Dictionary<string, Photo> dictionary = currentLibrary.photoLibrary;
+            Dictionary<string, Photo> dictionary = library.photoLibrary;
             foreach (var pic in dictionary)
             {
                 var photo = new Photo

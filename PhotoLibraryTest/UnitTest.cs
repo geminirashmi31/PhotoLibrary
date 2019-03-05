@@ -1,9 +1,9 @@
 ﻿
 using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PhotoLibraryApp;
+using PhotoLibrary;
 
-namespace PhotoLibraryApp.Test
+namespace PhotoLibrary.Test
 {
     [TestClass]
     public class UnitTest1
@@ -11,10 +11,10 @@ namespace PhotoLibraryApp.Test
         [TestMethod]
         public void AddPhotoPathTest()
         {
-            PhotoLibrary library = new PhotoLibrary("eden");
+            PhotoLibraryObj library = new PhotoLibraryObj("eden");
 
             library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-            
+            //library.LoadPhotoLibrary("eden");
 
 
         }
