@@ -11,7 +11,7 @@
     <Grid>
         <Button Content = "Add Photo Library" Click = "Add_Click"  Margin = "200,20,0,0"/>
         <Button Content = "Edit Photo Library" Click = "Edit_Click"  Margin = "50,20,0,0"/>
-        <Button Content="L1" Click = "Load_Click" Margin = "461,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
+        <Button Content="L4" Click = "Load_Click" Margin = "461,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         <Image Name="jopa" HorizontalAlignment="Left" Height="165" Margin="740,102,0,0" VerticalAlignment="Top" Width="460" Source="C:\Users\lentochka\Pictures\Saved Pictures\eden.jpg" />
         <!--<Image Loaded="Image_Loaded"/>-->
         

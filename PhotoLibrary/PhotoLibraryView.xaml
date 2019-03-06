@@ -16,18 +16,18 @@
                 <TextBlock Text="{Binding Content, Mode=OneWay}" Margin="12,14"/>
             </CommandBar.Content>
         </CommandBar>
-       
-        <GridView Name = "Photos" ItemsSource = "{Binding}" Height = "300" 
-         Width = "400" Margin = "50">
-            <GridView.ItemTemplate>
+
+        <GridView Name = "Photos"  ItemsSource="{x:Bind Items}" SelectionMode="None" IsItemClickEnabled="True" Height = "300" Width = "400" Margin = "50"/> 
+            <!--ItemsSource = "{Binding}" Height = "300" Width = "400" Margin = "50">-->
+            <!--<GridView.ItemTemplate>
                 <DataTemplate x:DataType = "local:PhotoLibraryObj">
                     <StackPanel Orientation = "Horizontal" Margin = "2">
                         <TextBlock Text = "{x:Bind Name}" Width = "95" Margin = "2" />
                         
                     </StackPanel>
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
+                </DataTemplate>-->
+            <!--</GridView.ItemTemplate>-->
+        <!--</GridView>-->
         <StackPanel Grid.Row = "2" Grid.ColumnSpan = "2">
             <TextBlock x:Name = "Output" Margin = "200,20,0,0"/>
             <Button Content = "Add Photo" Click = "AddPhoto_Click"  
@@ -35,16 +35,8 @@
             <Button Content = "Back" Click = "Back_Click"  
             Margin = "200,20,0,0"/>
         </StackPanel>
-        <Image Name="img" HorizontalAlignment="Left" Height="165" Margin="740,102,0,0" VerticalAlignment="Top" Width="460" Source="C:\Users\lentochka\Desktop\eden.jpg" />
-        <Image Stretch="UniformToFill"  Margin="15">
-            <Image.Source>
-                <!--<BitmapImage UriSource="{Binding img}"></BitmapImage>-->
-                <!--<BitmapImage UriSource="{Binding CurrentImagePath}"></BitmapImage>-->
-                <BitmapImage UriSource="C:\Users\lentochka\Desktop\eden.jpg"></BitmapImage>
-                <!--<BitmapImage UriSource="Assets/Black-And-White-Wall-Brick-Texture-Shadow-WallpapersByte-com-3840x2160.jpg"></BitmapImage>-->
-                <!--<BitmapImage UriSource="{Binding CurrentStorageFile}"></BitmapImage>-->
-            </Image.Source>
-        </Image>
+        <!--<Image Name="img" HorizontalAlignment="Left" Height="165" Margin="740,102,0,0" VerticalAlignment="Top" Width="460" />-->
+       
     </Grid>
     
     

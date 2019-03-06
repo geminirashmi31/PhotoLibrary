@@ -29,6 +29,12 @@ namespace PhotoLibrary
                 Name = System.IO.Path.GetFileName(photoPath),
                 Path = photoPath
             };
+
+            if (photoLibrary.ContainsKey(photoPath))
+            {
+                return;
+            }
+
             photoLibrary.Add(photoPath, photoToAdd);
             Save(this);
         } 
@@ -61,23 +67,9 @@ namespace PhotoLibrary
             return library;
         }
 
-        public static async Task<List<Photo>> LoadPhotoes(string libraryName)
+        public List<Photo> GetPhotos()
         {
-            var photoes = new List<Photo>();
-            PhotoLibraryObj library = await LoadPhotoLibrary(libraryName);
-            //PhotoLibrary currentLibrary = libraryList.First();
-
-            Dictionary<string, Photo> dictionary = library.photoLibrary;
-            foreach (var pic in dictionary)
-            {
-                var photo = new Photo
-                {
-                    Name = System.IO.Path.GetFileName(pic.Key),
-                    Path = pic.Key
-                };
-                photoes.Add(photo);
-            }
-            return photoes;
+            return this.photoLibrary.Values.ToList();
         }
 
     }

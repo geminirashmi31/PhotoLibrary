@@ -40,7 +40,7 @@ namespace PhotoLibrary
         }
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PhotoLibraryView), "L1");
+            this.Frame.Navigate(typeof(PhotoLibraryView), "L4");
             
         }
         //void Image_Loaded(object sender, RoutedEventArgs e)
