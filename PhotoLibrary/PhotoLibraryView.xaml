@@ -20,6 +20,7 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,70,0,0" VerticalAlignment="Stretch">
             <Button Content = "Add Photo" Click = "AddPhoto_Click" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,0,10,0"/>
             <Button Content = "Delete selected photos" Click = "DeletePhoto_Click" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,0,10,0"/>
+            <Button Content = "Set cover photo" Click = "SetCoverPhoto_Click" HorizontalAlignment="Left" VerticalAlignment="Top"  Margin="10,0,10,0"/>
         </StackPanel>
 
     </Grid>

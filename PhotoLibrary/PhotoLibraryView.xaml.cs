@@ -122,6 +122,21 @@ namespace PhotoLibrary
 
         }
 
+        private void SetCoverPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < Items.Count; i++)
+            {
+                CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
+                if (checkbox.IsChecked ?? false)
+                {
+                    libraries[LibraryName].SelectCoverPhoto(checkbox.Name);
+                    checkbox.IsChecked = false;
+                    break;
+                }
+            }
+
+        }
+
         private static Dictionary<string, PhotoLibraryObj> libraries = new Dictionary<string, PhotoLibraryObj>();
     }
 }
