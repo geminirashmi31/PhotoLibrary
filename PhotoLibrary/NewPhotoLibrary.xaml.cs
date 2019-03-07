@@ -28,10 +28,11 @@ namespace PhotoLibrary
         }
         private void AddLibrary_Click(object sender, RoutedEventArgs e)
         {
-            PhotoLibraryObj pl = new PhotoLibraryObj("L4");
-            pl.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-            pl.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
-
+            PhotoLibraryObj.CreatePhotoLibrary("L4").ContinueWith(task =>
+                {
+                    task.Result.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+                    task.Result.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
+                });
         }
     }
 }
