@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 
@@ -18,7 +20,7 @@ namespace PhotoLibrary
     /// </summary>
     public sealed partial class PhotoLibraryView : Page
     {
-        private string libraryName;
+        public string LibraryName { get; set; }
 
         public PhotoLibraryView()
         {
@@ -29,19 +31,19 @@ namespace PhotoLibrary
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            libraryName = e.Parameter as string;
+            LibraryName = e.Parameter as string;
             ShowImages();
         }
 
 
         private async void ShowImages()
         {
-            if (!libraries.ContainsKey(libraryName))
+            if (!libraries.ContainsKey(LibraryName))
             {
-                libraries.Add(libraryName, await PhotoLibraryObj.LoadPhotoLibrary(libraryName));
+                libraries.Add(LibraryName, await PhotoLibraryObj.LoadPhotoLibrary(LibraryName));
             }
 
-            var photos = libraries[libraryName].GetPhotos();
+            var photos = libraries[LibraryName].GetPhotos();
 
             // Open the file picker.
             //Windows.Storage.StorageFile file = await openPicker.PickSingleFileAsync();
@@ -70,7 +72,7 @@ namespace PhotoLibrary
                 StackPanel group = new StackPanel
                 {
                     Orientation = Orientation.Vertical,
-                    Margin = new Thickness(2)
+                    Margin = new Thickness(3)
                 };
 
                 BitmapImage bitmapImage = new BitmapImage();
@@ -82,6 +84,7 @@ namespace PhotoLibrary
 
                 group.Children.Add(image);
                 group.Children.Add(new TextBlock{Text = file.DisplayName});
+                group.Children.Add(new CheckBox{Name=file.Path});
 
                 Items.Add(group);
             }
@@ -98,7 +101,40 @@ namespace PhotoLibrary
         private void AddPhoto_Click(object sender, RoutedEventArgs e)
         {
             //this.Frame.Navigate(typeof(ShowPhoto));
-            libraries[libraryName].AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+            libraries[LibraryName].AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+            Items.Clear();
+            ShowImages();
+        }
+
+        private void DeletePhoto_Click(object sender, RoutedEventArgs e)
+        {
+            
+            for(var i=0; i<Items.Count; i++)
+            {
+                CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
+                if (checkbox.IsChecked ?? false)
+                {
+                    libraries[LibraryName].RemovePhotoPath(checkbox.Name);
+                    Items.RemoveAt(i);
+                    i--;
+                }
+            }
+
+        }
+
+        private void SetCoverPhoto_Click(object sender, RoutedEventArgs e)
+        {
+            for (var i = 0; i < Items.Count; i++)
+            {
+                CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
+                if (checkbox.IsChecked ?? false)
+                {
+                    libraries[LibraryName].SelectCoverPhoto(checkbox.Name);
+                    checkbox.IsChecked = false;
+                    break;
+                }
+            }
+
         }
 
         private static Dictionary<string, PhotoLibraryObj> libraries = new Dictionary<string, PhotoLibraryObj>();

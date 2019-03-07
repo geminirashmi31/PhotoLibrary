@@ -11,8 +11,8 @@ namespace PhotoLibrary
     public class PhotoLibraryObj
     {
         private const string TEXT_FILE_NAME = "PhotoLibrary";
-        public string Name { get; private set; }
-        public string CoverPhotoPath { get; private set; }
+        public string Name { get; set; }
+        public string CoverPhotoPath { get; set; }
         [JsonProperty]
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
@@ -36,21 +36,16 @@ namespace PhotoLibrary
             }
 
             photoLibrary.Add(photoPath, photoToAdd);
-            Save(this);
+            Save();
         } 
 
         public void RemovePhotoPath(string photoPath)
         {
-            Photo photoToRemove = new Photo
-            {
-                Name = System.IO.Path.GetFileName(photoPath),
-                Path = photoPath
-            };
             photoLibrary.Remove(photoPath);
-            Save(this);
+            Save();
         }
 
-        public void Save(PhotoLibraryObj photoLibrary)
+        public void Save()
         {
             string jsonPhotoLibrary = JsonConvert.SerializeObject(this);
             FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
@@ -59,17 +54,19 @@ namespace PhotoLibrary
         public static async Task<PhotoLibraryObj> LoadPhotoLibrary(string libraryName)
         {
             string fileContact = await FileHelper.ReadTextFileAsync(TEXT_FILE_NAME + libraryName + ".txt");
-
             PhotoLibraryObj library = JsonConvert.DeserializeObject<PhotoLibraryObj>(fileContact);
-
-            //var photoLibrary = new List<PhotoLibrary>();
-            //photoLibrary.Add(library);
             return library;
         }
 
         public List<Photo> GetPhotos()
         {
             return this.photoLibrary.Values.ToList();
+        }
+
+        public void SelectCoverPhoto(string photoPath)
+        {
+            this.CoverPhotoPath = photoPath;
+            Save();
         }
 
     }

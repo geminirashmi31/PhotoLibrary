@@ -127,6 +127,7 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Photo.cs" />
+    <Compile Include="PhotoLibraryManager.cs" />
     <Compile Include="PhotoLibraryObj.cs" />
     <Compile Include="PhotoLibraryView.xaml.cs">
       <DependentUpon>PhotoLibraryView.xaml</DependentUpon>
