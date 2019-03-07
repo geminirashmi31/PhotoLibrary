@@ -30,10 +30,10 @@ namespace PhotoLibraryTest.UnitTests
             photoLibraryManager.Initialize();
 
             var libraryName1 = "Test1";
-            var library1 = new PhotoLibrary.PhotoLibraryObj(libraryName1);
+            var library1 = PhotoLibraryObj.CreatePhotoLibrary(libraryName1).Result;
 
             var libraryName2 = "Test2";
-            var library2 = new PhotoLibrary.PhotoLibraryObj(libraryName2);
+            var library2 = PhotoLibraryObj.CreatePhotoLibrary(libraryName2).Result;
 
             try
             {
@@ -60,10 +60,10 @@ namespace PhotoLibraryTest.UnitTests
             photoLibraryManager.Initialize();
 
             var libraryName1 = "TestA";
-            var library1 = new PhotoLibrary.PhotoLibraryObj(libraryName1);
+            var library1 = PhotoLibraryObj.CreatePhotoLibrary(libraryName1).Result;
 
             var libraryName2 = "TestB";
-            var library2 = new PhotoLibrary.PhotoLibraryObj(libraryName2);
+            var library2 = PhotoLibraryObj.CreatePhotoLibrary(libraryName2).Result;
 
             try
             {
