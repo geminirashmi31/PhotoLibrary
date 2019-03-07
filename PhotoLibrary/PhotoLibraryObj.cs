@@ -11,8 +11,8 @@ namespace PhotoLibrary
     public class PhotoLibraryObj
     {
         private const string TEXT_FILE_NAME = "PhotoLibrary";
-        public string Name { get; private set; }
-        public string CoverPhotoPath { get; private set; }
+        public string Name { get; set; }
+        public string CoverPhotoPath { get; set; }
         [JsonProperty]
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
@@ -41,11 +41,6 @@ namespace PhotoLibrary
 
         public void RemovePhotoPath(string photoPath)
         {
-            Photo photoToRemove = new Photo
-            {
-                Name = System.IO.Path.GetFileName(photoPath),
-                Path = photoPath
-            };
             photoLibrary.Remove(photoPath);
             Save(this);
         }

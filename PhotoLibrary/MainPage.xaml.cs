@@ -40,8 +40,7 @@ namespace PhotoLibrary
         }
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PhotoLibraryView), "L5");
-            
+            this.Frame.Navigate(typeof(PhotoLibraryView), (sender as Button).Content);
         }
     }
 }
