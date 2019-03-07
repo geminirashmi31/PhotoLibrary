@@ -36,16 +36,16 @@ namespace PhotoLibrary
             }
 
             photoLibrary.Add(photoPath, photoToAdd);
-            Save(this);
+            Save();
         } 
 
         public void RemovePhotoPath(string photoPath)
         {
             photoLibrary.Remove(photoPath);
-            Save(this);
+            Save();
         }
 
-        public void Save(PhotoLibraryObj photoLibrary)
+        public void Save()
         {
             string jsonPhotoLibrary = JsonConvert.SerializeObject(this);
             FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
@@ -63,10 +63,11 @@ namespace PhotoLibrary
             return this.photoLibrary.Values.ToList();
         }
 
-        //public Photo SelectCoverPhoto()
-        //{
-        //    var  
-        //}
+        public void SelectCoverPhoto(string photoPath)
+        {
+            this.CoverPhotoPath = photoPath;
+            Save();
+        }
 
     }
 }
