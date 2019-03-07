@@ -22,11 +22,10 @@ namespace PhotoLibrary
             var textFile = await localFolder.CreateFileAsync
                 (filename, CreationCollisionOption.OpenIfExists);
 
-            var textStream = await textFile.OpenAsync(FileAccessMode.ReadWrite);
-            var textWriter = new DataWriter(textStream);
-            textWriter.WriteString(content);
-            await textWriter.StoreAsync();
-            textStream.Dispose();
+
+     
+                await FileIO.WriteTextAsync(textFile, content);
+
 
         }
 

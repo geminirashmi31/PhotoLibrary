@@ -59,11 +59,7 @@ namespace PhotoLibrary
         public static async Task<PhotoLibraryObj> LoadPhotoLibrary(string libraryName)
         {
             string fileContact = await FileHelper.ReadTextFileAsync(TEXT_FILE_NAME + libraryName + ".txt");
-
             PhotoLibraryObj library = JsonConvert.DeserializeObject<PhotoLibraryObj>(fileContact);
-
-            //var photoLibrary = new List<PhotoLibrary>();
-            //photoLibrary.Add(library);
             return library;
         }
 
@@ -71,6 +67,11 @@ namespace PhotoLibrary
         {
             return this.photoLibrary.Values.ToList();
         }
+
+        //public Photo SelectCoverPhoto()
+        //{
+        //    var  
+        //}
 
     }
 }
