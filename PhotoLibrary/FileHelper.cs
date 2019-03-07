@@ -19,19 +19,7 @@ namespace PhotoLibrary
         public static async Task WriteTextFileAsync(string filename, string content)
         {
             var textFile = await GetFilePath(filename);
-
             await FileIO.WriteTextAsync(textFile, content);
-
-            /*var localFolder = ApplicationData.Current.LocalFolder;
-            var textFile = await localFolder.CreateFileAsync
-                (filename, CreationCollisionOption.OpenIfExists);
-
-            var textStream = await textFile.OpenAsync(FileAccessMode.ReadWrite);
-            var textWriter = new DataWriter(textStream);
-            textWriter.WriteString(content);
-            await textWriter.StoreAsync();
-            textStream.Dispose();*/
-
         }
 
         public static async Task<string> ReadTextFileAsync(string filename)

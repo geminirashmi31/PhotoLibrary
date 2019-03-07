@@ -40,20 +40,7 @@ namespace PhotoLibrary
         }
         private void Load_Click(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PhotoLibraryView), "L4");
-            
+            this.Frame.Navigate(typeof(PhotoLibraryView), (sender as Button).Content);
         }
-        //void Image_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    Image img = sender as Image;
-        //    if (img != null)
-        //    {
-        //        BitmapImage bitmapImage = new BitmapImage();
-        //        img.Width = bitmapImage.DecodePixelWidth = 280;
-        //        bitmapImage.UriSource = new Uri("eden.jpg");
-        //        img.Source = bitmapImage;
-        //    }
-        //}
-
     }
 }
