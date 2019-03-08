@@ -23,13 +23,10 @@
         <TextBlock Name="nameLabel" Margin="240,20,0,0" Grid.ColumnSpan="2" Grid.RowSpan="3" HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"> Name:</TextBlock>
         <TextBox Name="nameText" Grid.Column="1" Margin="10,20,0,30" Text="{Binding Name, Mode=TwoWay}" Height="50" RenderTransformOrigin="0.572,-2.174" />
-
         <TextBlock Name="titleLabel" Margin="200,20,0,0" Grid.Row="1">CoverPicPath:</TextBlock>
         <TextBox Name="pathText" Grid.Column="1" Height="50" Grid.Row="1" Margin="10,20,0,0" Text="{Binding Title, Mode=OneWay}"/>
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
             <Button Content="Create Library" Click="Add_Click" Margin="200,80,0,0"/>
-            
         </StackPanel>
-
     </Grid>
 </Page>

@@ -39,14 +39,11 @@ namespace PhotoLibrary
         public static async Task<StorageFile> GetFilePath(string fileName)
         {
             var localFolder = ApplicationData.Current.LocalFolder;
-
             if(null == await localFolder.TryGetItemAsync(fileName))
             {
                 await localFolder.CreateFileAsync(fileName);
             }
-
             var textFile = await localFolder.GetFileAsync(fileName);
-
             return textFile;
         }
     }

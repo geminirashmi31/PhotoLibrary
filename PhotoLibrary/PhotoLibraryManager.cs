@@ -19,12 +19,9 @@ namespace PhotoLibrary
         private Dictionary<string, string> libraryCollection;
 
         private static PhotoLibraryManager libraryInstance;
-
-
-        
+       
         public static PhotoLibraryManager GetInstance()
         {
-            // TODO: safety
             if(libraryInstance == null)
             {
                 libraryInstance = new PhotoLibraryManager();
@@ -60,17 +57,10 @@ namespace PhotoLibrary
             return libraryMetadata;
         }
 
-        /*
-        public async Task<ICollection<PhotoLibraryObj>> GetPhotoLibraries()
-        {
-            // return await Task.FromResult<IList<PhotoLibraryObj>>(libraryCollection.Values.ToList());
-        }*/
-
         public async Task AddPhotoLibraryAsync(PhotoLibraryObj photoLibrary)
         {
             this.libraryCollection.Add(photoLibrary.Name, photoLibrary.CoverPhotoPath);
 
-            // var val = await Task.FromResult<int>(1);
             await UpdateFileAsync();
         }
 
@@ -95,9 +85,7 @@ namespace PhotoLibrary
         private async static Task<Dictionary<string, string>> LoadPhotoLibraryMetadataAsync()
         {
             string managerFileContent = await FileHelper.ReadTextFileAsync(LIBRARY_MANAGER_FILE_NAME);
-
             var libraries = JsonConvert.DeserializeObject<Dictionary<string, string>>(managerFileContent);
-
             return libraries != null ? libraries : new Dictionary<string, string>();
         }
     }

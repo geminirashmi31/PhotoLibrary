@@ -48,8 +48,7 @@ namespace PhotoLibrary
             DataContext = libraryMetadata;
             await ShowImages(libraryMetadata);
         }
-
-       
+  
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(NewPhotoLibrary));
@@ -60,57 +59,32 @@ namespace PhotoLibrary
             foreach (var data in libraryMetadata)
             {
                 var file = await StorageFile.GetFileFromPathAsync(data.CoverPicPath);
-                await ShowPhoto(file);
+                await ShowPhoto(file, data.Name);
             }
         }
 
-
-        private async Task ShowPhoto(StorageFile file)
-
+        private async Task ShowPhoto(StorageFile file, string libraryName)
         {
-
             using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))
-
             {
-
                 StackPanel group = new StackPanel
-
                 {
-
                     Orientation = Orientation.Vertical,
-
-                    Margin = new Thickness(3)
-
+                    Margin = new Thickness(2)
                 };
 
-
-
                 BitmapImage bitmapImage = new BitmapImage();
-
                 bitmapImage.SetSource(fileStream);
-
                 Image image = new Image();
-
                 image.Source = bitmapImage;
-
-                image.MaxHeight = 100;
-
+                image.MaxHeight = 80;
                 image.MaxWidth = 80;
 
-
-
                 group.Children.Add(image);
-
-                group.Children.Add(new TextBlock { Text = file.DisplayName });
-
-                group.Children.Add(new CheckBox { Name = file.Path });
-
+                group.Children.Add(new TextBlock { Text = libraryName });
                 Items.Add(group);
-
             }
-
         }
-
 
         /*
         private void Edit_Click(object sender, RoutedEventArgs e)
@@ -122,6 +96,5 @@ namespace PhotoLibrary
             this.Frame.Navigate(typeof(PhotoLibraryView), (sender as Button).Content);
         }
         */
-
     }
 }

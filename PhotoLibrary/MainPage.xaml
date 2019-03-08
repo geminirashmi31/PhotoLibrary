@@ -9,28 +9,16 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        
-        <!--title bar grid
-        <Grid Grid.Row="0" x:Name="customTitleBar" Height="32" Background="BlueViolet">
-            // Title
-            <TextBlock Text="Photo Library Manager" Foreground="White" VerticalAlignment="Center" Margin="12,0,0,0"/>
-        </Grid> -->
-
-
-        <GridView Name = "PhotoLibraryManager" ItemsSource = "{Binding}" Height = "300" Width = "400" Margin = "50">
+        <GridView Name = "PhotoLibraryManager" ItemsSource = "{Binding}" Height = "300" Width = "400" Margin = "100">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType= "local:LibraryMetadata">
-                    <StackPanel Orientation = "Horizontal" Margin = "2">
-                        <TextBlock Text = "{x:Bind Name}" Width = "95" Margin = "2" />
-                        <TextBlock Text = "{x:Bind CoverPicPath}" Width = "95" Margin = "2" x:Phase = "1" />
+                    <StackPanel Orientation = "Horizontal" Margin = "20">
+                        <!--<TextBlock Text = "{x:Bind Name}" Width = "95" Margin="2"/>-->
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
-
         <GridView ItemsSource="{x:Bind Items}" SelectionMode="None" Height = "300" Width = "400" Margin = "50"/>
-        
         <Button Content="Add Library" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Button_Click" Margin="100"/>
-
     </Grid>
 </Page>
