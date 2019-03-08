@@ -17,9 +17,10 @@ namespace PhotoLibrary
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
         public PhotoLibraryObj(){}
-        public PhotoLibraryObj(string name)
+        public PhotoLibraryObj(string name, string coverPhotoPath = "")
         {
             Name = name;
+            CoverPhotoPath = coverPhotoPath;
         }
 
         public void AddPhotoPath(string photoPath)

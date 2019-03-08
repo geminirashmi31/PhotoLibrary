@@ -9,13 +9,28 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button Content = "Add Photo Library" Click = "Add_Click"  Margin = "200,20,0,0"/>
-        <Button Content = "Edit Photo Library" Click = "Edit_Click"  Margin = "50,20,0,0"/>
-        <Button Content="L1" Click = "Load_Click" Margin = "461,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="L2" Click = "Load_Click" Margin = "481,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="L3" Click = "Load_Click" Margin = "501,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="L4" Click = "Load_Click" Margin = "521,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
-        <Button Content="L5" Click = "Load_Click" Margin = "541,370,0,0" HorizontalAlignment="Left" VerticalAlignment="Top"/>
         
+        <!--title bar grid
+        <Grid Grid.Row="0" x:Name="customTitleBar" Height="32" Background="BlueViolet">
+            // Title
+            <TextBlock Text="Photo Library Manager" Foreground="White" VerticalAlignment="Center" Margin="12,0,0,0"/>
+        </Grid> -->
+
+
+        <GridView Name = "PhotoLibraryManager" ItemsSource = "{Binding}" Height = "300" Width = "400" Margin = "50">
+            <GridView.ItemTemplate>
+                <DataTemplate x:DataType= "local:LibraryMetadata">
+                    <StackPanel Orientation = "Horizontal" Margin = "2">
+                        <TextBlock Text = "{x:Bind Name}" Width = "95" Margin = "2" />
+                        <TextBlock Text = "{x:Bind CoverPicPath}" Width = "95" Margin = "2" x:Phase = "1" />
+                    </StackPanel>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+
+        <GridView ItemsSource="{x:Bind Items}" SelectionMode="None" Height = "300" Width = "400" Margin = "50"/>
+        
+        <Button Content="Add Library" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Button_Click" Margin="100"/>
+
     </Grid>
 </Page>

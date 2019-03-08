@@ -101,7 +101,7 @@ namespace PhotoLibrary
         private void AddPhoto_Click(object sender, RoutedEventArgs e)
         {
             //this.Frame.Navigate(typeof(ShowPhoto));
-            libraries[LibraryName].AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+            libraries[LibraryName].AddPhotoPath("C:\\temp\\rainbowKitties.jpg");
             Items.Clear();
             ShowImages();
         }
