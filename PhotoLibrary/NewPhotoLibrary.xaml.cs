@@ -33,13 +33,14 @@ namespace PhotoLibrary
             var name = nameText.Text;
             var path = pathText.Text;
 
-            var library = PhotoLibraryObj.CreatePhotoLibraryAsync(name, path).Result;
-            var t1 = Task.Run(async () => await library.SaveAsync());
+            var t1 = Task.Run(async () => await PhotoLibraryObj.CreatePhotoLibraryAsync(name, path));
             Task.WaitAny(t1);
+            var library = t1.Result;
+            
 
-            var pl = PhotoLibraryObj.CreatePhotoLibraryAsync(name, path).Result;
+            
             var libraryManager = PhotoLibraryManager.GetInstance();
-            var t2 = Task.Run(async () => await libraryManager.AddPhotoLibraryAsync(pl));
+            var t2 = Task.Run(async () => await libraryManager.AddPhotoLibraryAsync(library));
             Task.WaitAny(t2);
 
             ReturnToHomePage();
