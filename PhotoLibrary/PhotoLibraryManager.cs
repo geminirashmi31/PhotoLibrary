@@ -57,9 +57,9 @@ namespace PhotoLibrary
             return libraryMetadata;
         }
 
-        public async Task AddPhotoLibraryAsync(LibraryMetadata libraryMetadata)
+        public async Task AddPhotoLibraryAsync(PhotoLibraryObj library)
         {
-            this.libraryCollection.Add(libraryMetadata.Name, libraryMetadata.CoverPicPath);
+            this.libraryCollection.Add(library.Name, library.CoverPhotoPath);
 
             await UpdateFileAsync();
         }
