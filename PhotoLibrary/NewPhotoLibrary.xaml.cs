@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -26,13 +27,22 @@ namespace PhotoLibrary
         {
             this.InitializeComponent();
         }
-        private void AddLibrary_Click(object sender, RoutedEventArgs e)
+
+        private void Add_Click(object sender, RoutedEventArgs e)
         {
-            PhotoLibraryObj.CreatePhotoLibrary("L4").ContinueWith(task =>
-                {
-                    task.Result.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-                    task.Result.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
-                });
+            var name = nameText.Text;
+            var path = pathText.Text;
+            PhotoLibraryObj pl = new PhotoLibraryObj(name, path);
+            var libraryManager = PhotoLibraryManager.GetInstance();
+            var t = Task.Run(async () => await libraryManager.AddPhotoLibraryAsync(pl));
+            Task.WaitAny(t);
+            
+            ReturnToHomePage();
+        }
+
+        private void ReturnToHomePage()
+        {
+            this.Frame.Navigate(typeof(MainPage));
         }
     }
 }

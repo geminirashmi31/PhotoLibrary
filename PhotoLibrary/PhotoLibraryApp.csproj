@@ -122,6 +122,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="LibraryMetadata.cs" />
     <Compile Include="NewPhotoLibrary.xaml.cs">
       <DependentUpon>NewPhotoLibrary.xaml</DependentUpon>
     </Compile>
