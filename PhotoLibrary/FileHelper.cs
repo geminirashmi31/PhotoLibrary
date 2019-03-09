@@ -24,7 +24,7 @@ namespace PhotoLibrary
 
         public static async Task<string> ReadTextFileAsync(string filename)
         {
-            var textFile = await GetFilePath(filename);
+            var textFile = await GetFilePath(filename);            
             return await FileIO.ReadTextAsync(textFile);
         }
 
