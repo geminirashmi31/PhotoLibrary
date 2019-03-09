@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,14 +18,19 @@ namespace PhotoLibrary
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
         public PhotoLibraryObj(){}
-        public PhotoLibraryObj(string name, string coverPhotoPath = "")
+        public PhotoLibraryObj(string name, string coverPhotoPath)
         {
             Name = name;
             CoverPhotoPath = coverPhotoPath;
         }
 
-        public void AddPhotoPath(string photoPath)
+        public async Task AddPhotoPath(string photoPath)
         {
+            if(!File.Exists(photoPath))
+            {
+                return;
+            }
+
             Photo photoToAdd = new Photo
             {
                 Name = System.IO.Path.GetFileName(photoPath),
@@ -37,19 +43,19 @@ namespace PhotoLibrary
             }
 
             photoLibrary.Add(photoPath, photoToAdd);
-            Save();
+            await Save();
         } 
 
-        public void RemovePhotoPath(string photoPath)
+        public async Task RemovePhotoPath(string photoPath)
         {
             photoLibrary.Remove(photoPath);
-            Save();
+            await Save();
         }
 
-        public void Save()
+        public async Task Save()
         {
             string jsonPhotoLibrary = JsonConvert.SerializeObject(this);
-            FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
+            await FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
         }
 
         public static async Task<PhotoLibraryObj> LoadPhotoLibrary(string libraryName)
@@ -64,10 +70,10 @@ namespace PhotoLibrary
             return this.photoLibrary.Values.ToList();
         }
 
-        public void SelectCoverPhoto(string photoPath)
+        public async Task SelectCoverPhoto(string photoPath)
         {
             this.CoverPhotoPath = photoPath;
-            Save();
+            await Save();
         }
 
     }

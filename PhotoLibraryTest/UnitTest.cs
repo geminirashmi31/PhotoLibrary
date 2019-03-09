@@ -11,9 +11,10 @@ namespace PhotoLibrary.Test
         [TestMethod]
         public void AddPhotoPathTest()
         {
-            PhotoLibraryObj library = new PhotoLibraryObj("eden");
-
-            library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+            var coverPicPath = "C:\temp\rainbowKitties.jpg";
+            PhotoLibraryObj library = new PhotoLibraryObj("eden", coverPicPath);
+            library.Save().Wait();
+            // library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
             //library.LoadPhotoLibrary("eden");
 
 

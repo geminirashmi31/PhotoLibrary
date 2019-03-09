@@ -8,6 +8,12 @@ namespace PhotoLibrary
 {
     public class LibraryMetadata
     {
+        public LibraryMetadata(string name, string coverPicPath)
+        {
+            this.Name = name;
+            this.CoverPicPath = coverPicPath;
+        }
+
         public string Name { get; set; }
 
         public string CoverPicPath { get; set; }

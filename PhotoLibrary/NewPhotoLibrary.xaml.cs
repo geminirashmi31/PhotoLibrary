@@ -32,11 +32,16 @@ namespace PhotoLibrary
         {
             var name = nameText.Text;
             var path = pathText.Text;
-            PhotoLibraryObj pl = new PhotoLibraryObj(name, path);
+
+            var library = new PhotoLibraryObj(name, path);
+            var t1 = Task.Run(async () => await library.Save());
+            Task.WaitAny(t1);
+
+            LibraryMetadata pl = new LibraryMetadata(name, path);
             var libraryManager = PhotoLibraryManager.GetInstance();
-            var t = Task.Run(async () => await libraryManager.AddPhotoLibraryAsync(pl));
-            Task.WaitAny(t);
-            
+            var t2 = Task.Run(async () => await libraryManager.AddPhotoLibraryAsync(pl));
+            Task.WaitAny(t2);
+
             ReturnToHomePage();
         }
 

@@ -26,14 +26,6 @@ namespace PhotoLibrary
         {
             var textFile = await GetFilePath(filename);
             return await FileIO.ReadTextAsync(textFile);
-            /*
-            var textStream = await textFile.OpenReadAsync();
-            var textReader = new DataReader(textStream);
-            var textLength = textStream.Size;
-            await textReader.LoadAsync((uint)textLength);
-
-            return textReader.ReadString((uint)textLength);
-            */
         }
 
         public static async Task<StorageFile> GetFilePath(string fileName)
