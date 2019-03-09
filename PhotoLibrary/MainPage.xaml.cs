@@ -15,6 +15,12 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
+using Windows.ApplicationModel.Core;
+using Windows.UI.ViewManagement;
+using Windows.UI;
+using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -25,15 +31,62 @@ namespace PhotoLibrary
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private PhotoLibraryManager manager;
+
+        public ObservableCollection<StackPanel> Items { get; set; } = new ObservableCollection<StackPanel>();
+
         public MainPage()
         {
             this.InitializeComponent();
+            manager = PhotoLibrary.PhotoLibraryManager.GetInstance();
         }
 
-        private void Add_Click(object sender, RoutedEventArgs e)
+        protected override async void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            var libraryMetadata = await manager.LoadPhotoLibraries();
+            DataContext = libraryMetadata;
+            await ShowImages(libraryMetadata);
+        }
+  
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(NewPhotoLibrary));
         }
+
+        private async Task ShowImages(IList<LibraryMetadata> libraryMetadata)
+        {
+            foreach (var data in libraryMetadata)
+            {
+                var file = await StorageFile.GetFileFromPathAsync(data.CoverPicPath);
+                await ShowPhoto(file, data.Name);
+            }
+        }
+
+        private async Task ShowPhoto(StorageFile file, string libraryName)
+        {
+            using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.Read))
+            {
+                StackPanel group = new StackPanel
+                {
+                    Orientation = Orientation.Vertical,
+                    Margin = new Thickness(2)
+                };
+
+                BitmapImage bitmapImage = new BitmapImage();
+                bitmapImage.SetSource(fileStream);
+                Image image = new Image();
+                image.Source = bitmapImage;
+                image.MaxHeight = 80;
+                image.MaxWidth = 80;
+
+                group.Children.Add(image);
+                group.Children.Add(new TextBlock { Text = libraryName });
+                Items.Add(group);
+            }
+        }
+
+        /*
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(PhotoLibraryView));
@@ -42,5 +95,6 @@ namespace PhotoLibrary
         {
             this.Frame.Navigate(typeof(PhotoLibraryView), (sender as Button).Content);
         }
+        */
     }
 }

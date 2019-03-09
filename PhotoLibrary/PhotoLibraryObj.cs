@@ -24,6 +24,7 @@ namespace PhotoLibrary
             await library.Save();
             return library;
         }
+      
         /// <summary>
         /// Add photo to photo library
         /// </summary>
@@ -44,6 +45,7 @@ namespace PhotoLibrary
             photoLibrary.Add(photoPath, photoToAdd);
             return Save();
         }
+      
         /// <summary>
         /// Delete photo from photo library
         /// </summary>
