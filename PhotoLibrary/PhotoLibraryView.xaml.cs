@@ -102,7 +102,7 @@ namespace PhotoLibrary
         {
            this.Frame.Navigate(typeof(AddPhoto), libraries[LibraryName]);
         }
-
+        
         private void DeletePhoto_Click(object sender, RoutedEventArgs e)
         {
             
