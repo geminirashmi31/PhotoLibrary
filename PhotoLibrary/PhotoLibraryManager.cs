@@ -51,15 +51,15 @@ namespace PhotoLibrary
 
             foreach (KeyValuePair<string, string> kv in this.libraryCollection)
             {
-                libraryMetadata.Add(new LibraryMetadata { Name = kv.Key, CoverPicPath = kv.Value });
+                libraryMetadata.Add(new LibraryMetadata(kv.Key, kv.Value));
             }
 
             return libraryMetadata;
         }
 
-        public async Task AddPhotoLibraryAsync(PhotoLibraryObj photoLibrary)
+        public async Task AddPhotoLibraryAsync(PhotoLibraryObj library)
         {
-            this.libraryCollection.Add(photoLibrary.Name, photoLibrary.CoverPhotoPath);
+            this.libraryCollection.Add(library.Name, library.CoverPhotoPath);
 
             await UpdateFileAsync();
         }

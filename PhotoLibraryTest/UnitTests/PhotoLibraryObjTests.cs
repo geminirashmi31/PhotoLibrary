@@ -12,10 +12,11 @@ namespace PhotoLibraryTest.UnitTests
         [TestMethod]
         public async Task AddRemovePhotoPathTest()
         {
-            PhotoLibraryObj library = await PhotoLibraryObj.CreatePhotoLibrary("eden");
+            var coverPicPath = @"C:\temp\cutePuppy.jpg";
+            PhotoLibraryObj library = await PhotoLibraryObj.CreatePhotoLibraryAsync("eden", coverPicPath);
 
-            await library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-            await library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
+            await library.AddPhotoPathAsync("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+            await library.AddPhotoPathAsync("C:\\Users\\lentochka\\Desktop\\karen.jpg");
 
             Photo photo1 = library.GetPhotos().FirstOrDefault(p => p.Path == "C:\\Users\\lentochka\\Desktop\\eden.jpg");
             Photo photo2 = library.GetPhotos().FirstOrDefault(p => p.Path == "C:\\Users\\lentochka\\Desktop\\karen.jpg");
@@ -24,7 +25,7 @@ namespace PhotoLibraryTest.UnitTests
             Assert.AreEqual(photo1.Path, "C:\\Users\\lentochka\\Desktop\\eden.jpg");
             Assert.AreEqual(photo2.Path, "C:\\Users\\lentochka\\Desktop\\karen.jpg");
 
-            await library.RemovePhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
+            await library.RemovePhotoPathAsync("C:\\Users\\lentochka\\Desktop\\karen.jpg");
             photo2 = library.GetPhotos().FirstOrDefault(p => p.Path == "C:\\Users\\lentochka\\Desktop\\karen.jpg");
             Assert.IsNull(photo2);
 
@@ -34,12 +35,13 @@ namespace PhotoLibraryTest.UnitTests
         [TestMethod]
         public async Task SaveTestAsync()
         {
-            PhotoLibraryObj library = await PhotoLibraryObj.CreatePhotoLibrary(Guid.NewGuid().ToString());
+            var coverPicPath = @"C:\temp\cutePuppy.jpg";
+            PhotoLibraryObj library = await PhotoLibraryObj.CreatePhotoLibraryAsync(Guid.NewGuid().ToString(), coverPicPath);
 
-            await library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-            await library.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
-            await library.SelectCoverPhoto("C:\\Users\\lentochka\\Desktop\\karen.jpg");
-            var loadLibrary = await PhotoLibraryObj.LoadPhotoLibrary(library.Name);
+            await library.AddPhotoPathAsync("C:\\Users\\lentochka\\Desktop\\eden.jpg");
+            await library.AddPhotoPathAsync("C:\\Users\\lentochka\\Desktop\\karen.jpg");
+            await library.SelectCoverPhotoAsync("C:\\Users\\lentochka\\Desktop\\karen.jpg");
+            var loadLibrary = await PhotoLibraryObj.LoadPhotoLibraryAsync(library.Name);
 
             Photo photo1 = library.GetPhotos().FirstOrDefault(p => p.Path == "C:\\Users\\lentochka\\Desktop\\eden.jpg");
             Photo photo2 = library.GetPhotos().FirstOrDefault(p => p.Path == "C:\\Users\\lentochka\\Desktop\\karen.jpg");

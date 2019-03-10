@@ -40,7 +40,7 @@ namespace PhotoLibrary
         {
             if (!libraries.ContainsKey(LibraryName))
             {
-                libraries.Add(LibraryName, await PhotoLibraryObj.LoadPhotoLibrary(LibraryName));
+                libraries.Add(LibraryName, await PhotoLibraryObj.LoadPhotoLibraryAsync(LibraryName));
             }
 
             var photos = libraries[LibraryName].GetPhotos();
@@ -111,7 +111,7 @@ namespace PhotoLibrary
                 CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
                 if (checkbox.IsChecked ?? false)
                 {
-                    libraries[LibraryName].RemovePhotoPath(checkbox.Name);
+                    libraries[LibraryName].RemovePhotoPathAsync(checkbox.Name);
                     Items.RemoveAt(i);
                     i--;
                 }
@@ -126,7 +126,7 @@ namespace PhotoLibrary
                 CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
                 if (checkbox.IsChecked ?? false)
                 {
-                    libraries[LibraryName].SelectCoverPhoto(checkbox.Name);
+                    libraries[LibraryName].SelectCoverPhotoAsync(checkbox.Name);
                     checkbox.IsChecked = false;
                     break;
                 }

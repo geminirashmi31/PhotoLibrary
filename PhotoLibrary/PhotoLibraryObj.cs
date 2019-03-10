@@ -17,11 +17,12 @@ namespace PhotoLibrary
         [JsonProperty]
         private Dictionary<string, Photo> photoLibrary = new Dictionary<string, Photo>();
 
-        public static async Task<PhotoLibraryObj> CreatePhotoLibrary(string name)
+        public static async Task<PhotoLibraryObj> CreatePhotoLibraryAsync(string name, string coverPicPath)
         {
             var library = new PhotoLibraryObj();
             library.Name = name;
-            await library.Save();
+            library.CoverPhotoPath = coverPicPath;
+            await library.SaveAsync();
             return library;
         }
       
@@ -29,7 +30,7 @@ namespace PhotoLibrary
         /// Add photo to photo library
         /// </summary>
         /// <param name="photoPath">string representing the Path where the photo saved on the computer</param>
-        public Task AddPhotoPath(string photoPath)
+        public async Task AddPhotoPathAsync(string photoPath)
         {
             Photo photoToAdd = new Photo
             {
@@ -39,33 +40,33 @@ namespace PhotoLibrary
 
             if (photoLibrary.ContainsKey(photoPath))
             {
-                return Task.CompletedTask;
+                return;
             }
 
             photoLibrary.Add(photoPath, photoToAdd);
-            return Save();
+            await SaveAsync();
         }
       
         /// <summary>
         /// Delete photo from photo library
         /// </summary>
         /// <param name="photoPath">string representing the Path where the photo saved on the computer</param>
-        public Task RemovePhotoPath(string photoPath)
+        public async Task RemovePhotoPathAsync(string photoPath)
         {
             photoLibrary.Remove(photoPath);
-            return Save();
+            await SaveAsync();
         }
 
         /// <summary>
         /// saving photolibrary to a txt file on disk
         /// </summary>
-        public Task Save()
+        public async Task SaveAsync()
         {
             string jsonPhotoLibrary = JsonConvert.SerializeObject(this);
-            return FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
+            await FileHelper.WriteTextFileAsync(TEXT_FILE_NAME + Name + ".txt", jsonPhotoLibrary);
         }
 
-        public static async Task<PhotoLibraryObj> LoadPhotoLibrary(string libraryName)
+        public static async Task<PhotoLibraryObj> LoadPhotoLibraryAsync(string libraryName)
         {
             string fileContact = await FileHelper.ReadTextFileAsync(TEXT_FILE_NAME + libraryName + ".txt");
             PhotoLibraryObj library = JsonConvert.DeserializeObject<PhotoLibraryObj>(fileContact);
@@ -77,10 +78,10 @@ namespace PhotoLibrary
             return this.photoLibrary.Values.ToList();
         }
 
-        public Task SelectCoverPhoto(string photoPath)
+        public async Task SelectCoverPhotoAsync(string photoPath)
         {
             this.CoverPhotoPath = photoPath;
-            return Save();
+            await SaveAsync();
         }
 
     }
