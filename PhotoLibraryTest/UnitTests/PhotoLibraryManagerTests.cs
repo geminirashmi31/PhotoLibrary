@@ -16,7 +16,7 @@ namespace PhotoLibraryTest.UnitTests
         public void CanCreateAndInitializePhotoLibraryManager()
         {
             var photoLibraryManager = PhotoLibraryManager.GetInstance();
-            photoLibraryManager.Initialize();
+            photoLibraryManager.Initialize().Wait();
 
             Assert.IsTrue(File.Exists(photoLibraryManager.PhotoLibraryManagerFile));
             var libraries = GetPhotoLibraryNames().Result;
