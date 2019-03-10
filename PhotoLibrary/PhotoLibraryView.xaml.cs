@@ -100,11 +100,7 @@ namespace PhotoLibrary
 
         private void AddPhoto_Click(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(ShowPhoto));
-            /*libraries[LibraryName].AddPhotoPathAsync("C:\\temp\\rainbowKitties.jpg");
-            Items.Clear();
-            ShowImages();*/
-            this.Frame.Navigate(typeof(AddPhoto), libraries[LibraryName]);
+           this.Frame.Navigate(typeof(AddPhoto), libraries[LibraryName]);
         }
 
         private void DeletePhoto_Click(object sender, RoutedEventArgs e)
