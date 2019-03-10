@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -26,12 +28,38 @@ namespace PhotoLibrary
         {
             this.InitializeComponent();
         }
-        private void AddLibrary_Click(object sender, RoutedEventArgs e)
-        {
-            PhotoLibraryObj pl = new PhotoLibraryObj("L4");
-            pl.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-            pl.AddPhotoPath("C:\\Users\\lentochka\\Desktop\\karen.jpg");
 
+        private async void Add_Click(object sender, RoutedEventArgs e)
+        {
+            var name = nameText.Text;
+            var path = pathLabel.Text;
+
+            var library = await PhotoLibraryObj.CreatePhotoLibraryAsync(name, path);
+            
+            var libraryManager = PhotoLibraryManager.GetInstance();
+            await libraryManager.AddPhotoLibraryAsync(library);
+            
+            ReturnToHomePage();
+        }
+
+        private void ReturnToHomePage()
+        {
+            this.Frame.Navigate(typeof(MainPage));
+        }
+
+        private async void SelectImageFile_Click(object sender, RoutedEventArgs e)
+        {
+            var file = await PhotoPicker.PickFileAsync();
+
+            if(file != null)
+            {
+                pathLabel.Text = file.Path;
+            }
+        }
+
+        private void Back_Click(object sender, RoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainPage));
         }
     }
 }

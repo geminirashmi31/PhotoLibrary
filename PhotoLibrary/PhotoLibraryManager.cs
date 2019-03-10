@@ -1,33 +1,66 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace PhotoLibrary
 {
     public class PhotoLibraryManager
     {
         private const string LIBRARY_MANAGER_FILE_NAME = "PhotoLibraryManager.txt";
-        private Dictionary<string, PhotoLibraryObj> libraryCollection;
+        private Dictionary<string, string> libraryCollection;
 
-        public PhotoLibraryManager()
+        private static PhotoLibraryManager libraryInstance;
+       
+        public static PhotoLibraryManager GetInstance()
         {
-            this.libraryCollection = new Dictionary<string, PhotoLibraryObj>();
+            if(libraryInstance == null)
+            {
+                libraryInstance = new PhotoLibraryManager();
+            }
+
+            return libraryInstance;
+        }
+
+        private PhotoLibraryManager()
+        {
+            this.libraryCollection = new Dictionary<string, string>();
             this.PhotoLibraryManagerFile = FileHelper.GetFilePath(LIBRARY_MANAGER_FILE_NAME).Result.Path;
         }
 
         public string PhotoLibraryManagerFile { get; private set; }
 
-        public void Initialize()
+        public async Task Initialize()
         {
-            this.libraryCollection = LoadPhotoLibraries().Result;
+            this.libraryCollection = await LoadPhotoLibraryMetadataAsync();
         }
 
-        public async Task AddPhotoLibraryAsync(PhotoLibraryObj photoLibrary)
+        public async Task<List<LibraryMetadata>> LoadPhotoLibraries()
         {
-            this.libraryCollection.Add(photoLibrary.Name, photoLibrary);
+            this.libraryCollection = await LoadPhotoLibraryMetadataAsync();
+
+            var libraryMetadata = new List<LibraryMetadata>();
+
+            foreach (KeyValuePair<string, string> kv in this.libraryCollection)
+            {
+                libraryMetadata.Add(new LibraryMetadata(kv.Key, kv.Value));
+            }
+
+            return libraryMetadata;
+        }
+
+        public async Task AddPhotoLibraryAsync(PhotoLibraryObj library)
+        {
+            this.libraryCollection.Add(library.Name, library.CoverPhotoPath);
+
             await UpdateFileAsync();
         }
 
@@ -45,34 +78,15 @@ namespace PhotoLibrary
 
         private async Task UpdateFileAsync()
         {
-            string jsonPhotoLibrary = JsonConvert.SerializeObject(this.libraryCollection.Keys.ToList());
+            string jsonPhotoLibrary = JsonConvert.SerializeObject(this.libraryCollection);
             await FileHelper.WriteTextFileAsync(LIBRARY_MANAGER_FILE_NAME, jsonPhotoLibrary);
         }
 
-        private async static Task<Dictionary<string, PhotoLibraryObj>> LoadPhotoLibraries()
-        {
-            var libraryNames = await LoadPhotoLibraryNames();
-            var libraries = new Dictionary<string, PhotoLibraryObj>();
-
-            foreach (var lib in libraryNames)
-            {
-                var library = PhotoLibraryObj.LoadPhotoLibrary(lib).Result;
-
-                if (library != null)
-                {
-                    libraries.Add(lib, library);
-                }
-            }
-            return libraries;
-        }
-
-        private async static Task<List<string>> LoadPhotoLibraryNames()
+        private async static Task<Dictionary<string, string>> LoadPhotoLibraryMetadataAsync()
         {
             string managerFileContent = await FileHelper.ReadTextFileAsync(LIBRARY_MANAGER_FILE_NAME);
-
-            List<string> libraries = JsonConvert.DeserializeObject<List<string>>(managerFileContent);
-
-            return libraries != null ? libraries : new List<string>();
+            var libraries = JsonConvert.DeserializeObject<Dictionary<string, string>>(managerFileContent);
+            return libraries != null ? libraries : new Dictionary<string, string>();
         }
     }
 }

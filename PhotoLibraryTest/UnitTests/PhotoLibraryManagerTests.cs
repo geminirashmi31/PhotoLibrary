@@ -15,8 +15,8 @@ namespace PhotoLibraryTest.UnitTests
         [TestMethod]
         public void CanCreateAndInitializePhotoLibraryManager()
         {
-            var photoLibraryManager = new PhotoLibraryManager();
-            photoLibraryManager.Initialize();
+            var photoLibraryManager = PhotoLibraryManager.GetInstance();
+            photoLibraryManager.Initialize().Wait();
 
             Assert.IsTrue(File.Exists(photoLibraryManager.PhotoLibraryManagerFile));
             var libraries = GetPhotoLibraryNames().Result;
@@ -26,25 +26,26 @@ namespace PhotoLibraryTest.UnitTests
         [TestMethod]
         public void CanAddNewLibraryToLibraryManager()
         {
-            var photoLibraryManager = new PhotoLibraryManager();
-            photoLibraryManager.Initialize();
+            var photoLibraryManager = PhotoLibraryManager.GetInstance();
+            photoLibraryManager.Initialize().Wait();
 
+            var coverPicPath = @"C:\temp\cutePuppy.jpg";
             var libraryName1 = "Test1";
-            var library1 = new PhotoLibrary.PhotoLibraryObj(libraryName1);
+            var library1 = PhotoLibraryObj.CreatePhotoLibraryAsync(libraryName1, coverPicPath).Result;
 
             var libraryName2 = "Test2";
-            var library2 = new PhotoLibrary.PhotoLibraryObj(libraryName2);
+            var library2 = PhotoLibraryObj.CreatePhotoLibraryAsync(libraryName2, coverPicPath).Result;
 
             try
             {
                 photoLibraryManager.AddPhotoLibraryAsync(library1).Wait();
                 photoLibraryManager.AddPhotoLibraryAsync(library2).Wait();
 
-                Assert.IsTrue(File.Exists(photoLibraryManager.PhotoLibraryManagerFile));
+                // Assert.IsTrue(File.Exists(photoLibraryManager.PhotoLibraryManagerFile));
                 var libraries = GetPhotoLibraryNames().Result;
                 Assert.AreEqual(2, libraries.Count);
-                Assert.IsTrue(libraries.Contains(libraryName1));
-                Assert.IsTrue(libraries.Contains(libraryName2));
+                Assert.IsTrue(libraries.ContainsKey(libraryName1));
+                Assert.IsTrue(libraries.ContainsKey(libraryName2));
             }
             finally
             {
@@ -56,14 +57,15 @@ namespace PhotoLibraryTest.UnitTests
         [TestMethod]
         public void CanRemoveLibraryFromLibraryManager()
         {
-            var photoLibraryManager = new PhotoLibraryManager();
-            photoLibraryManager.Initialize();
+            var photoLibraryManager = PhotoLibraryManager.GetInstance();
+            photoLibraryManager.Initialize().Wait();
 
+            var coverPicPath = @"C:\temp\cutePuppy.jpg";
             var libraryName1 = "TestA";
-            var library1 = new PhotoLibrary.PhotoLibraryObj(libraryName1);
+            var library1 = PhotoLibraryObj.CreatePhotoLibraryAsync(libraryName1, coverPicPath).Result;
 
             var libraryName2 = "TestB";
-            var library2 = new PhotoLibrary.PhotoLibraryObj(libraryName2);
+            var library2 = PhotoLibraryObj.CreatePhotoLibraryAsync(libraryName2, coverPicPath).Result;
 
             try
             {
@@ -72,16 +74,16 @@ namespace PhotoLibraryTest.UnitTests
 
                 var libraries = GetPhotoLibraryNames().Result;
                 Assert.AreEqual(2, libraries.Count);
-                Assert.IsTrue(libraries.Contains(libraryName1));
-                Assert.IsTrue(libraries.Contains(libraryName2));
+                Assert.IsTrue(libraries.ContainsKey(libraryName1));
+                Assert.IsTrue(libraries.ContainsKey(libraryName2));
 
                 // remove library1
                 photoLibraryManager.RemovePhotoLibraryAsync(library1.Name).Wait();
 
                 var upadtedLibraries = GetPhotoLibraryNames().Result;
                 Assert.AreEqual(1, upadtedLibraries.Count);
-                Assert.IsFalse(upadtedLibraries.Contains(libraryName1));
-                Assert.IsTrue(upadtedLibraries.Contains(libraryName2));
+                Assert.IsFalse(upadtedLibraries.ContainsKey(libraryName1));
+                Assert.IsTrue(upadtedLibraries.ContainsKey(libraryName2));
             }
             finally
             {
@@ -89,13 +91,13 @@ namespace PhotoLibraryTest.UnitTests
             }
         }
 
-        private async static Task<List<string>> GetPhotoLibraryNames()
+        private async static Task<Dictionary<string, string>> GetPhotoLibraryNames()
         {
             string managerFileContent = await FileHelper.ReadTextFileAsync(LIBRARY_MANAGER_FILE_NAME);
 
-            List<string> libraries = JsonConvert.DeserializeObject<List<string>>(managerFileContent);
+            var libraries = JsonConvert.DeserializeObject<Dictionary<string, string>>(managerFileContent);
 
-            return libraries != null ? libraries : new List<string>();
+            return libraries != null ? libraries : new Dictionary<string, string>();
         }
     }
 }

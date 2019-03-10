@@ -9,7 +9,26 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-        <Button Content = "Add Library" Click = "AddLibrary_Click"  
-            Margin = "200,20,0,0"/>
+        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
+        </Grid.ColumnDefinitions>
+         
+        <TextBlock Name="nameLabel" Margin="240,20,0,0" Grid.RowSpan="1" HorizontalAlignment="Stretch"
+                   VerticalAlignment="Stretch"> Name:</TextBlock>
+        <TextBox Name="nameText" Grid.Column="1" Margin="10,0,0,0" Grid.ColumnSpan="1" Text="{Binding Name, Mode=OneWay}" Height="50" RenderTransformOrigin="0.572,-2.174" />
+        <TextBlock Name="titleLabel" Margin="200,20,0,0" Grid.Row="1">CoverPicPath:</TextBlock>
+        <TextBlock Name="pathLabel" Height="50" Grid.Row="1" Grid.Column="2" Margin="20,0,0,0" Text="{Binding Title, Mode=OneWay}"/>
+        <Button Content="Select File" Click="SelectImageFile_Click" Margin="10,0,0,0" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="Create Library" Click="Add_Click" Margin="10,10,0,0" Grid.Row="2"  Grid.Column="1"/>
+        <AppBarButton Icon="Back" Label="Back" Click="Back_Click" Margin="10, 0, 0, 0" Grid.Row="3" Grid.Column="1"/>
     </Grid>
 </Page>

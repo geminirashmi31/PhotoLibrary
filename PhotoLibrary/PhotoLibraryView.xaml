@@ -9,12 +9,13 @@
 
     <Grid>
         <CommandBar>
-            <AppBarButton Icon="Back" Label="Back" Click="Back_Click"/>
             <CommandBar.Content>
                 <TextBlock Text="{x:Bind LibraryName, Mode=OneWay}" Margin="12,14"/>
             </CommandBar.Content>
         </CommandBar>
-
+        
+        <AppBarButton Icon="Back" Label="Back" Click="Back_Click" Margin="1200, 100, 20, 20"/>
+        
         <GridView ItemsSource="{x:Bind Items}" SelectionMode="None" Height = "300" Width = "400" Margin = "50"/>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch" Margin="0,70,0,0" VerticalAlignment="Stretch">

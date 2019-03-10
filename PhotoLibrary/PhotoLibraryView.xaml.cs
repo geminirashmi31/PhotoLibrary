@@ -40,7 +40,7 @@ namespace PhotoLibrary
         {
             if (!libraries.ContainsKey(LibraryName))
             {
-                libraries.Add(LibraryName, await PhotoLibraryObj.LoadPhotoLibrary(LibraryName));
+                libraries.Add(LibraryName, await PhotoLibraryObj.LoadPhotoLibraryAsync(LibraryName));
             }
 
             var photos = libraries[LibraryName].GetPhotos();
@@ -100,13 +100,10 @@ namespace PhotoLibrary
 
         private void AddPhoto_Click(object sender, RoutedEventArgs e)
         {
-            //this.Frame.Navigate(typeof(ShowPhoto));
-            libraries[LibraryName].AddPhotoPath("C:\\Users\\lentochka\\Desktop\\eden.jpg");
-            Items.Clear();
-            ShowImages();
+           this.Frame.Navigate(typeof(AddPhoto), libraries[LibraryName]);
         }
-
-        private void DeletePhoto_Click(object sender, RoutedEventArgs e)
+        
+        private async void DeletePhoto_Click(object sender, RoutedEventArgs e)
         {
             
             for(var i=0; i<Items.Count; i++)
@@ -114,22 +111,22 @@ namespace PhotoLibrary
                 CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
                 if (checkbox.IsChecked ?? false)
                 {
-                    libraries[LibraryName].RemovePhotoPath(checkbox.Name);
+                    await libraries[LibraryName].RemovePhotoPathAsync(checkbox.Name);
+                    
                     Items.RemoveAt(i);
                     i--;
                 }
             }
-
         }
 
-        private void SetCoverPhoto_Click(object sender, RoutedEventArgs e)
+        private async void SetCoverPhoto_Click(object sender, RoutedEventArgs e)
         {
             for (var i = 0; i < Items.Count; i++)
             {
                 CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
                 if (checkbox.IsChecked ?? false)
                 {
-                    libraries[LibraryName].SelectCoverPhoto(checkbox.Name);
+                    await libraries[LibraryName].SelectCoverPhotoAsync(checkbox.Name);
                     checkbox.IsChecked = false;
                     break;
                 }
