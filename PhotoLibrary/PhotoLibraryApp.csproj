@@ -136,6 +136,7 @@
     <Compile Include="PhotoLibraryView.xaml.cs">
       <DependentUpon>PhotoLibraryView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PhotoPicker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

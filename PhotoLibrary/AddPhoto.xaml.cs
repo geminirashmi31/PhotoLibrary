@@ -55,7 +55,7 @@ namespace PhotoLibrary
             var file = await picker.PickSingleFileAsync();
             if (file != null)
             {
-                await _library.AddPhotoPath(file.Path);
+                await _library.AddPhotoPathAsync(file.Path);
             }
         }
     }

@@ -19,6 +19,6 @@
             </GridView.ItemTemplate>
         </GridView>
         <GridView ItemsSource="{x:Bind Items}" SelectionMode="None" Height = "300" Width = "400" Margin = "50"/>
-        <Button Content="Add Library" HorizontalAlignment="Center" VerticalAlignment="Top" Click="Button_Click" Margin="100"/>
+        <Button Content="Add Library" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddNewPhotoLibrary_Click" Margin="100"/>
     </Grid>
 </Page>

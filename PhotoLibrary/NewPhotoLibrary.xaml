@@ -9,24 +9,26 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
-
+        
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="200"/>
         </Grid.ColumnDefinitions>
-
-        <TextBlock Name="nameLabel" Margin="240,20,0,0" Grid.ColumnSpan="2" Grid.RowSpan="3" HorizontalAlignment="Stretch"
+         
+        <TextBlock Name="nameLabel" Margin="240,20,0,0" Grid.RowSpan="1" HorizontalAlignment="Stretch"
                    VerticalAlignment="Stretch"> Name:</TextBlock>
-        <TextBox Name="nameText" Grid.Column="1" Margin="10,20,0,30" Text="{Binding Name, Mode=TwoWay}" Height="50" RenderTransformOrigin="0.572,-2.174" />
+        <TextBox Name="nameText" Grid.Column="1" Margin="10,0,0,0" Grid.ColumnSpan="1" Text="{Binding Name, Mode=OneWay}" Height="50" RenderTransformOrigin="0.572,-2.174" />
         <TextBlock Name="titleLabel" Margin="200,20,0,0" Grid.Row="1">CoverPicPath:</TextBlock>
-        <TextBox Name="pathText" Grid.Column="1" Height="50" Grid.Row="1" Margin="10,20,0,0" Text="{Binding Title, Mode=OneWay}"/>
-        <StackPanel Grid.Row="2" Grid.ColumnSpan="2">
-            <Button Content="Create Library" Click="Add_Click" Margin="200,80,0,0"/>
-        </StackPanel>
+        <TextBlock Name="pathLabel" Height="50" Grid.Row="1" Grid.Column="2" Margin="20,0,0,0" Text="{Binding Title, Mode=OneWay}"/>
+        <Button Content="Select File" Click="SelectImageFile_Click" Margin="10,0,0,0" Grid.Row="1" Grid.Column="1"/>
+        <Button Content="Create Library" Click="Add_Click" Margin="10,10,0,0" Grid.Row="2"  Grid.Column="1"/>
+        <AppBarButton Icon="Back" Label="Back" Click="Back_Click" Margin="10, 0, 0, 0" Grid.Row="3" Grid.Column="1"/>
     </Grid>
 </Page>

@@ -103,7 +103,7 @@ namespace PhotoLibrary
            this.Frame.Navigate(typeof(AddPhoto), libraries[LibraryName]);
         }
         
-        private void DeletePhoto_Click(object sender, RoutedEventArgs e)
+        private async void DeletePhoto_Click(object sender, RoutedEventArgs e)
         {
             
             for(var i=0; i<Items.Count; i++)
@@ -111,22 +111,22 @@ namespace PhotoLibrary
                 CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
                 if (checkbox.IsChecked ?? false)
                 {
-                    libraries[LibraryName].RemovePhotoPathAsync(checkbox.Name);
+                    await libraries[LibraryName].RemovePhotoPathAsync(checkbox.Name);
+                    
                     Items.RemoveAt(i);
                     i--;
                 }
             }
-
         }
 
-        private void SetCoverPhoto_Click(object sender, RoutedEventArgs e)
+        private async void SetCoverPhoto_Click(object sender, RoutedEventArgs e)
         {
             for (var i = 0; i < Items.Count; i++)
             {
                 CheckBox checkbox = Items[i].Children.First(child => child is CheckBox) as CheckBox;
                 if (checkbox.IsChecked ?? false)
                 {
-                    libraries[LibraryName].SelectCoverPhotoAsync(checkbox.Name);
+                    await libraries[LibraryName].SelectCoverPhotoAsync(checkbox.Name);
                     checkbox.IsChecked = false;
                     break;
                 }

@@ -49,7 +49,7 @@ namespace PhotoLibrary
             await ShowImages(libraryMetadata);
         }
   
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void AddNewPhotoLibrary_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(NewPhotoLibrary));
         }
@@ -58,6 +58,9 @@ namespace PhotoLibrary
         {
             foreach (var data in libraryMetadata)
             {
+                if (string.IsNullOrEmpty(data.CoverPicPath))
+                    continue;
+
                 var file = await StorageFile.GetFileFromPathAsync(data.CoverPicPath);
                 await ShowPhoto(file, data.Name);
             }
@@ -82,15 +85,22 @@ namespace PhotoLibrary
 
                 group.Children.Add(image);
                 group.Children.Add(new TextBlock { Text = libraryName });
+
+                group.Tapped += NavigateToPhotoLibraryView;
+
                 Items.Add(group);
             }
         }
 
-        /*
-        private void Edit_Click(object sender, RoutedEventArgs e)
+        
+        private void NavigateToPhotoLibraryView(object sender, RoutedEventArgs e)
         {
-            this.Frame.Navigate(typeof(PhotoLibraryView));
+            var textBlock = ((sender as StackPanel).Children[1] as TextBlock);
+
+            this.Frame.Navigate(typeof(PhotoLibraryView), textBlock.Text);
         }
+
+        /*
         private void Load_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(PhotoLibraryView), (sender as Button).Content);
