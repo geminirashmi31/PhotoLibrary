@@ -33,7 +33,7 @@ namespace PhotoLibrary
         private PhotoLibraryManager()
         {
             this.libraryCollection = new Dictionary<string, string>();
-            this.PhotoLibraryManagerFile = FileHelper.GetFilePath(LIBRARY_MANAGER_FILE_NAME).Result.Path;
+            this.PhotoLibraryManagerFile = FileHelper.GetFilePathAsync(LIBRARY_MANAGER_FILE_NAME).Result.Path;
         }
 
         public string PhotoLibraryManagerFile { get; private set; }

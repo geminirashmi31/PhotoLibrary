@@ -9,16 +9,19 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid>
+        <!--
         <GridView Name = "PhotoLibraryManager" ItemsSource = "{Binding}" Height = "300" Width = "400" Margin = "100">
             <GridView.ItemTemplate>
                 <DataTemplate x:DataType= "local:LibraryMetadata">
                     <StackPanel Orientation = "Horizontal" Margin = "20">
-                        <!--<TextBlock Text = "{x:Bind Name}" Width = "95" Margin="2"/>-->
+                        <TextBlock Text = "{x:Bind Name}" Width = "95" Margin="2"/>
                     </StackPanel>
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        -->
         <GridView ItemsSource="{x:Bind Items}" SelectionMode="None" Height = "300" Width = "400" Margin = "50"/>
         <Button Content="Add Library" HorizontalAlignment="Center" VerticalAlignment="Top" Click="AddNewPhotoLibrary_Click" Margin="100"/>
+        <Button Name="deleteLibraryBtn" Content="Delete selected libraries" HorizontalAlignment="Center" VerticalAlignment="Top" Click="DeleteLibrary_Click" Margin="50"  Visibility="Collapsed"/>
     </Grid>
 </Page>

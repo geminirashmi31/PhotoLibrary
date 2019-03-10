@@ -18,17 +18,17 @@ namespace PhotoLibrary
         /// <param name="content">Content to write to the file</param>
         public static async Task WriteTextFileAsync(string filename, string content)
         {
-            var textFile = await GetFilePath(filename);
+            var textFile = await GetFilePathAsync(filename);
             await FileIO.WriteTextAsync(textFile, content);
         }
 
         public static async Task<string> ReadTextFileAsync(string filename)
         {
-            var textFile = await GetFilePath(filename);            
+            var textFile = await GetFilePathAsync(filename);            
             return await FileIO.ReadTextAsync(textFile);
         }
 
-        public static async Task<StorageFile> GetFilePath(string fileName)
+        public static async Task<StorageFile> GetFilePathAsync(string fileName)
         {
             var localFolder = ApplicationData.Current.LocalFolder;
             if(null == await localFolder.TryGetItemAsync(fileName))

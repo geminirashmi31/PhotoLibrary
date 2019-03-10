@@ -33,12 +33,15 @@ namespace PhotoLibrary
     {
         private PhotoLibraryManager manager;
 
+        private Dictionary<string, StackPanel> selectedLibraries;
+
         public ObservableCollection<StackPanel> Items { get; set; } = new ObservableCollection<StackPanel>();
 
         public MainPage()
         {
             this.InitializeComponent();
             manager = PhotoLibrary.PhotoLibraryManager.GetInstance();
+            this.selectedLibraries = new Dictionary<string, StackPanel>();
         }
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
@@ -73,7 +76,7 @@ namespace PhotoLibrary
                 StackPanel group = new StackPanel
                 {
                     Orientation = Orientation.Vertical,
-                    Margin = new Thickness(2)
+                    Margin = new Thickness(3)
                 };
 
                 BitmapImage bitmapImage = new BitmapImage();
@@ -83,21 +86,58 @@ namespace PhotoLibrary
                 image.MaxHeight = 80;
                 image.MaxWidth = 80;
 
+                group.Children.Add(new CheckBox { Name = libraryName, IsChecked = true, IsEnabled= false, Visibility = Visibility.Collapsed });
                 group.Children.Add(image);
                 group.Children.Add(new TextBlock { Text = libraryName });
+                
+                group.DoubleTapped += NavigateToPhotoLibraryView;
 
-                group.Tapped += NavigateToPhotoLibraryView;
+                group.Tapped += EnableForDeletion;
 
                 Items.Add(group);
             }
         }
 
         
-        private void NavigateToPhotoLibraryView(object sender, RoutedEventArgs e)
+        private void NavigateToPhotoLibraryView(object sender, DoubleTappedRoutedEventArgs e)
         {
-            var textBlock = ((sender as StackPanel).Children[1] as TextBlock);
+            var textBlock = ((sender as StackPanel).Children[2] as TextBlock);
 
             this.Frame.Navigate(typeof(PhotoLibraryView), textBlock.Text);
+        }
+
+        private void EnableForDeletion(object sender, TappedRoutedEventArgs e)
+        {
+            var checkBox = ((sender as StackPanel).Children[0] as CheckBox);
+
+            checkBox.Visibility = checkBox.Visibility == Visibility.Collapsed ? Visibility.Visible : Visibility.Collapsed;
+
+            var libraryName = checkBox.Name;
+
+            if(selectedLibraries.ContainsKey(libraryName))
+            {
+                selectedLibraries.Remove(libraryName);
+            }
+            else
+            {
+                selectedLibraries.Add(libraryName, sender as StackPanel);
+            }
+
+            deleteLibraryBtn.Visibility = selectedLibraries.Count == 0 ? Visibility.Collapsed : Visibility.Visible;
+        }
+
+        private async void DeleteLibrary_Click(object sender, RoutedEventArgs e)
+        {
+            foreach(var library in selectedLibraries)
+            {
+                await manager.RemovePhotoLibraryAsync(library.Key);
+                await DeleteLibrarayFileAsync(library.Key);
+
+                Items.Remove(library.Value);
+            }
+
+            this.selectedLibraries.Clear();
+            deleteLibraryBtn.Visibility = Visibility.Collapsed;
         }
 
         /*
@@ -106,5 +146,12 @@ namespace PhotoLibrary
             this.Frame.Navigate(typeof(PhotoLibraryView), (sender as Button).Content);
         }
         */
+
+        private async Task DeleteLibrarayFileAsync(string libraryName)
+        {
+            var fileName = string.Format("PhotoLibrary{0}.txt", libraryName);
+            var file = await FileHelper.GetFilePathAsync(fileName);
+            await file.DeleteAsync();
+        }
     }
 }
