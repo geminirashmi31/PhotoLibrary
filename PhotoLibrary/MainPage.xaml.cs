@@ -90,23 +90,23 @@ namespace PhotoLibrary
                 group.Children.Add(image);
                 group.Children.Add(new TextBlock { Text = libraryName });
                 
-                group.DoubleTapped += NavigateToPhotoLibraryView;
+                group.Tapped += NavigateToPhotoLibraryView;
 
-                group.Tapped += EnableForDeletion;
+                group.RightTapped += EnableForDeletion;
 
                 Items.Add(group);
             }
         }
 
         
-        private void NavigateToPhotoLibraryView(object sender, DoubleTappedRoutedEventArgs e)
+        private void NavigateToPhotoLibraryView(object sender, TappedRoutedEventArgs e)
         {
             var textBlock = ((sender as StackPanel).Children[2] as TextBlock);
 
             this.Frame.Navigate(typeof(PhotoLibraryView), textBlock.Text);
         }
 
-        private void EnableForDeletion(object sender, TappedRoutedEventArgs e)
+        private void EnableForDeletion(object sender, RightTappedRoutedEventArgs e)
         {
             var checkBox = ((sender as StackPanel).Children[0] as CheckBox);
 
