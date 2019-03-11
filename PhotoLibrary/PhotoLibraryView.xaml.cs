@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -98,9 +99,22 @@ namespace PhotoLibrary
             this.Frame.Navigate(typeof(MainPage));
         }
 
-        private void AddPhoto_Click(object sender, RoutedEventArgs e)
+        private async void AddPhoto_ClickAsync(object sender, RoutedEventArgs e)
         {
-           this.Frame.Navigate(typeof(AddPhoto), libraries[LibraryName]);
+            FileOpenPicker picker = new FileOpenPicker();
+            picker.ViewMode = PickerViewMode.Thumbnail;
+            picker.SuggestedStartLocation = PickerLocationId.PicturesLibrary;
+            picker.FileTypeFilter.Add(".jpg");
+            picker.FileTypeFilter.Add(".jpeg");
+            picker.FileTypeFilter.Add(".png");
+
+            var file = await picker.PickSingleFileAsync();
+            if (file != null)
+            {
+                await libraries[LibraryName].AddPhotoPathAsync(file.Path);
+            }
+            Items.Clear();
+            ShowImages();
         }
         
         private async void DeletePhoto_Click(object sender, RoutedEventArgs e)
